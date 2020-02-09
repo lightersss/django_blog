@@ -1,0 +1,85 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+div.nav_horizontal {
+    border-bottom: 1px inset mediumseagreen;
+}
+
+div.nav_horizontal h3.logo {
+    display: inline-block;
+}
+
+div.nav_horizontal a {
+    text-decoration: none;
+}
+
+a {
+    color: darkcyan;
+}
+
+/*!*a.d_logo {*!*/
+/*!*    padding-left: 20px;*!*/
+/*!*}*!*/
+
+div.content {
+    padding-left: 20px
+}
+div.panel{
+    width: 150px;
+    text-align: center;
+}
+div.panel-heading{
+    background-color: mediumaquamarine!important;
+}
+#panel-title{
+    color: white;
+}
+span.active-span{
+    background-color: mediumaquamarine!important;
+}
+/*div.nav_vertical {*/
+
+/*}*/
+
+li.navli {
+    /*text-align: center;*/
+    width: 95px;
+}
+
+#container{
+    /*margin-right: 0!important;*/
+    /*margin-left: 0!important;*/
+    padding-right: 25px;
+    padding-left: 25px;
+    width: auto;
+}
+div.django-ckeditor-widget{
+    width: 100%;
+}
+span.active-thumbs-up{
+    color: red;!important;
+}
+.alert {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	min-width: 300px;
+	max-width: 600px;
+	transform: translate(-50%,-50%);
+	z-index: 99999;
+	text-align: center;
+	padding: 15px;
+	border-radius: 3px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+input.form-control{
+    width: 250px;!important;
+}

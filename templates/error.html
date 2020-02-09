@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}首页{% endblock %}
+{% block style_extend %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}{{ message }}<a href="{{ redirect }}">返回</a>{% endblock %}

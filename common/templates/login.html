@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}登录{% endblock %}
+{% block style_extend %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+    <form style="width: 500px" class="form-horizontal input_class" method="post" action="{% url 'common:login' %}">
+        {% csrf_token %}
+
+        {#        {{ form }}#}
+        {% for field in form %}
+            <label style="float:left;padding-top: 8px;padding-right: 8px">{{ field.label }}</label>{{ field }}
+
+            <p class="text-danger">{{ field.errors.as_text }}</p>
+        {% endfor %}
+        <span class="pull-left text-danger">{{ form.non_field_errors }}</span>
+        <input type="hidden" name="path" value="{{ request.GET.from }}">
+        <button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px;align-self: center">
+            登陆
+        </button>
+
+    </form>{% endblock %}

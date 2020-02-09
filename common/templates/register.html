@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}注册{% endblock %}
+{% block style_extend %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+    <form style="width: 300px" class="form-horizontal" method="post" action="{% url 'common:register' %}">
+        {% csrf_token %}
+
+        {#        {{ form }}#}
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.label == '邮箱' %}
+                    <button id="send_code_button" type="button" class="btn btn-primary">发送验证码</button>
+                {% endif %}
+                <p class="text-danger">{{ field.errors.as_text }}</p>
+            </div>
+        {% endfor %}
+
+        <span class="pull-left text-danger">{{ form.non_field_errors }}</span>
+        <input type="hidden" name="path" value="{{ request.GET.from }}">
+        {#        <button id="send_code_button" type="button" class="btn btn-primary pull-left">发送验证码</button>#}
+        <button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px;align-self: center">
+            注册
+        </button>
+
+    </form>{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        $('#send_code_button').click(function () {
+            var email = $('#id_email').val();
+            var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+            if (email != '' && reg.test(email)) {
+                $.ajax(
+                    {
+                        url: "{% url 'common:send_email_verify_code' %}",
+                        type: "GET",
+                        data: {
+                            'email_address': email
+                        },
+                        cache: false,
+                        success: function (data) {
+                            if (data['status'] == 'SUCCESS') {
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    }
+                );
+                $('#tip').text('已发送')
+                $(this).addClass('disabled');
+                $(this).attr('disabled', true);
+
+                var time = 30;
+                $(this).text(time + 's');
+                var interval = setInterval(() => {
+                    if (time <= 0) {
+                        $(this).removeClass('disabled');
+                        $(this).attr('disabled', false);
+                        $(this).text('发送验证码');
+                        return false;
+                    }
+                    time--;
+                    $(this).text(time + 's');
+                }, 1000)
+            } else {
+                $('#tip').text('格式不对');
+            }
+        })
+    </script>
+{% endblock %}

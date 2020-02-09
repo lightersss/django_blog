@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load extra_tags %}
+{% load comment_tags %}
+{% load like_tags %}
+{% block title %}{{ blogType }}类型的博客{% endblock %}
+{% block content %}
+    共有{{ paginator.count }}篇{{ blogType }}类型的博客<br>
+    {% for blog in page_of_blogs.object_list %}
+        <p>文章标题：<a href="{% url 'blog:get_blog_detail' blog.id %}">{{ blog.title }}</a></p>
+        <p>文章作者：{{ blog.author }}</p>
+        <p>文章内容：{{ blog.content|My_truncatechars:4 }}</p>
+         <p>阅读量{{ blog.get_read_num }}评论数{%  get_comment_count blog %}点赞数：{% get_like_count blog %}</p>
+        {#  <p>查看详情：<a href="{% url 'blog:get_blog_detail'  blog.id%}">查看详情</a></p> #}
+        <br>
+    {% empty %}
+        无
+    {% endfor %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            {% if page_of_blogs.has_previous %}
+                <li>
+                    <a href="?page={{ page_of_blogs.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for i in paginator.page_range %}
+                {% if i == page_of_blogs.number %}
+                    <li class="active"><span>{{ i }}</span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_of_blogs.has_next %}
+                <li>
+                    <a href="?page={{ page_of_blogs.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

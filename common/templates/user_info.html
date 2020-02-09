@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}个人信息{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+    <p>用户名：{{ user.username }}</p>
+      <p>电话号码：{{ user.mobile }}</p>
+      <p>邮箱:{{ user.email }}</p>
+     <p> 上一次登录：{{ user.last_login|date:"Y-m-d H:i:s" }}</p>
+    <p><a href="#" >修改密码</a> </p>
+        <p><a href="{% url 'common:change_email' %}" >修改邮箱</a> </p>
+    {% else %}
+        <span>未登录，跳转</span>
+        <script type="text/javascript">
+         function go() {
+             window.location.href='/'
+         }
+         setTimeout(go,1000)
+        </script>
+    {% endif %}
+{% endblock %}

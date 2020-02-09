@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}首页{% endblock %}
+{% block style_extend %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+    <form style="width: 300px" class="form-horizontal" method="post" action="{% url 'common:change_email' %}">
+        {% csrf_token %}
+        {#        {{ form }}#}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+
+            <p id="tip" class="text-danger">{{ field.errors.as_text }}</p>
+        {% endfor %}
+        <span class="pull-left text-danger">{{ form.non_field_errors }}</span>
+        <div class="clearfix"></div>
+        <button type="submit" class="btn btn-primary pull-right">修改</button>
+
+
+
+    </form>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        $('#send_code_button').click(function () {
+            var email = $('#id_email').val();
+            var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+            if (email != '' && reg.test(email)) {
+                $.ajax(
+                    {
+                        url: "{% url 'common:send_email_verify_code' %}",
+                        type: "GET",
+                        data: {
+                            'email_address': email
+                        },
+                        cache: false,
+                        success: function (data) {
+                            if (data['status'] == 'SUCCESS') {
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    }
+                );
+                $('#tip').text('已发送')
+                $(this).addClass('disabled');
+                $(this).attr('disabled', true);
+
+                var time = 30;
+                $(this).text(time + 's');
+                var interval = setInterval(() => {
+                    if (time <= 0) {
+                        $(this).removeClass('disabled');
+                        $(this).attr('disabled', false);
+                        $(this).text('发送验证码');
+                        return false
+                    }
+                    time--;
+                    $(this).text(time + 's');
+                }, 1000)
+            } else {
+                $('#tip').text('格式不对')
+            }
+        })
+
+    </script>
+{% endblock %}
